@@ -1,18 +1,38 @@
 
 import { Inter } from "next/font/google";
+import axios from 'axios';
+import { Video } from "@/types";
+import { NoResult } from "@/components/NoResult";
+import VideoCard from "@/components/VideoCard";
 
-const inter = Inter({ subsets: ["latin"] });
+interface Iprops{
+  videos: Video[]
+}
 
-export default function Home() {
+export const getServerSideProps = async () => {
+
+  const response = await axios.get('http://localhost:3000/api/post');
+
+  const data =response.data
+  return {
+    props:{
+      videos: data
+    }
+  }
+}
+
+
+export default function Home({videos}: Iprops) {
+  // console.log(videos);
   return (
     <>
-    <div className="min-h-screen bg-gray-100 flex items-center justify-center">
-      <div className="bg-white p-6 rounded-lg shadow-lg">
-        <h1 className="text-2xl font-bold text-gray-900">Hello, Tailwind!</h1>
-        <p className="mt-4 text-gray-600">
-          This is a simple example of using Tailwind CSS in a Next.js project.
-        </p>
-      </div>
+    <div className="flex flex-col gap-10 videos h-full">
+      {videos.length ? 
+      (videos.map((video: Video)=>(
+        <VideoCard post={video} key={video._id} />
+      ))):(
+        <NoResult text={"No Videos"}/>
+      )}
     </div>
     </>
   );
