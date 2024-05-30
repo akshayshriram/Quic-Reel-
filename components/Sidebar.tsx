@@ -39,24 +39,6 @@ const Sidebar = () => {
               </div>
             </Link>
           </div>
-          {/* We are using @react-oauth/google instead of react-google-login because of dependencies and react versions*/}
-
-          {/* The cookiePolicy="single_host_origin" option in react-google-login ensures that cookies are set only for the current domain, enhancing security and privacy. When switching to @react-oauth/google, the approach for handling cookies and session management is different because this library uses OAuth 2.0 under the hood and does not explicitly require setting a cookie policy like react-google-login. */}
-          {!userPorfile && (
-            <>
-              <div className="px-2 py-4 hidden xl:block">
-                <p className="text-gray-400">Login to like and comment</p>
-                <div className="pr-4">
-                  <GoogleOAuthProvider clientId=''>
-                    <div>
-                      <h1>Google Login</h1>
-                      <GoogleLogin onSuccess={()=>{}} onError={()=>{}} />
-                    </div>
-                  </GoogleOAuthProvider>
-                </div>
-              </div>
-            </>
-          )}
           <Discover />
           <SuggestedAccounts />
           <Footer />
