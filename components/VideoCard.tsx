@@ -16,10 +16,6 @@ interface IProps {
 
 const VideoCard: NextPage<IProps> = ({ post }) => {
 
-  console.log(post.postedBy.userName);
-  console.log(post.postedBy.image);
-  
-  
   
   const [isHover,setIsHover] = useState(false);
 

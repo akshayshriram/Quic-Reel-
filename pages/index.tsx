@@ -4,6 +4,7 @@ import axios from 'axios';
 import { Video } from "@/types";
 import { NoResult } from "@/components/NoResult";
 import VideoCard from "@/components/VideoCard";
+import { BASE_URL } from "@/utils";
 
 interface Iprops{
   videos: Video[]
@@ -11,7 +12,7 @@ interface Iprops{
 
 export const getServerSideProps = async () => {
 
-  const response = await axios.get('http://localhost:3000/api/post');
+  const response = await axios.get(`${BASE_URL}/api/post`);
 
   const data =response.data
   return {
