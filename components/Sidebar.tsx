@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { NextPage } from "next";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import { GoogleOAuthProvider,useGoogleLogin, GoogleLogin, googleLogout } from '@react-oauth/google';
+import useAuthStore from "@/store/authStore";
 
 import { AiFillHome, AiOutlineMenu } from "react-icons/ai";
 import { ImCancelCircle } from "react-icons/im";
@@ -10,7 +11,15 @@ import Discover from "./Discover";
 import SuggestedAccounts from "./SuggestedAccounts";
 import Footer from "./Footer";
 
+
+
 const Sidebar = () => {
+  const { fetchAllUsers, allUsers } = useAuthStore();
+  
+  useEffect(() => {
+    fetchAllUsers();
+  }, [fetchAllUsers]);
+
   const [showSidebar, setshowSidebar] = useState(true);
 
   const userPorfile = false;
@@ -40,7 +49,7 @@ const Sidebar = () => {
             </Link>
           </div>
           <Discover />
-          <SuggestedAccounts />
+          <SuggestedAccounts allUsers={allUsers} />
           <Footer />
         </>
       )}
