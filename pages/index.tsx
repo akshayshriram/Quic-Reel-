@@ -10,17 +10,21 @@ interface Iprops{
   videos: Video[]
 }
 
-export const getServerSideProps = async () => {
+export const getServerSideProps = async ({
+  query: { topic },
+}: {
+  query: { topic: string };
+}) => {
+  let response = await axios.get(`${BASE_URL}/api/post`);
 
-  const response = await axios.get(`${BASE_URL}/api/post`);
-
-  const data =response.data
-  return {
-    props:{
-      videos: data
-    }
+  if(topic) {
+    response = await axios.get(`${BASE_URL}/api/discover/${topic}`);
   }
-}
+  
+  return {
+    props: { videos: response.data },
+  };
+};
 
 
 export default function Home({videos}: Iprops) {
