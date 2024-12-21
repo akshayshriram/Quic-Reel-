@@ -1,6 +1,7 @@
 import "@/styles/globals.css";
 import type { AppProps } from "next/app";
 import { useState, useEffect } from "react";
+import { NextApiRequest, NextApiResponse } from "next";
 
 import {
   GoogleOAuthProvider,
@@ -12,22 +13,35 @@ import Navbar from "../components/Navbar";
 import Sidebar from "../components/Sidebar";
 import Cors from "cors";
 
+export function initMiddleware(middleware: any) {
+  return (req: NextApiRequest, res: NextApiResponse) =>
+    new Promise((resolve, reject) => {
+      middleware(req, res, (result: any) => {
+        if (result instanceof Error) {
+          return reject(result);
+        }
+        return resolve(result);
+      });
+    });
+}
+
+export const cors = initMiddleware(
+  Cors({
+    // Options
+    methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
+    origin: [
+      "https://quickreel.akshayshriram.in",
+      "https://quic-reel.vercel.app",
+    ],
+    credentials: true,
+  })
+);
 const MyApp = ({ Component, pageProps }: AppProps) => {
   const [isSSR, setIsSSR] = useState(true);
 
   useEffect(() => {
     setIsSSR(false);
   }, []);
-
-  // Initialize the cors middleware
-  Cors({
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-    origin: [
-      "https://quickreel.akshayshriram.in",
-      "https://quic-reel.vercel.app",
-    ],
-    credentials: true,
-  });
 
   return (
     <GoogleOAuthProvider
